@@ -1,0 +1,21 @@
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = e.parameter;
+
+  var file = e.parameters.file; // Uploaded file blob
+  var blob = Utilities.newBlob(Utilities.base64Decode(file), MimeType.PNG, "upload.png");
+  var folder = DriveApp.getFolderById("YOUR_FOLDER_ID"); // Create a folder and get its ID
+  var uploadedFile = folder.createFile(blob);
+  var fileUrl = uploadedFile.getUrl();
+
+  sheet.appendRow([
+    data.name,
+    data.phone,
+    data.email,
+    data.college,
+    fileUrl,
+    new Date()
+  ]);
+
+  return ContentService.createTextOutput("Success");
+}
